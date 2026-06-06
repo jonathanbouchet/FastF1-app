@@ -56,6 +56,8 @@ uv run pytest tests/test_endpoints.py::test_health_check
 
 - `GET /health` — Health check endpoint
 - `GET /years/{year}/available` — Check if a given year has F1 data available
+- `GET /years/{year}/races` — Get all race names for a given year
+- `GET /years/{year}/races/{race_name}/schedule` — Get event schedule for a race (sessions with dates)
 
 ## Project Structure
 
