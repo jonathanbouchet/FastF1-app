@@ -1,4 +1,4 @@
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, status
 import fastf1
 
 from src.models import (
@@ -36,10 +36,10 @@ def get_race_names(year: int):
     try:
         schedule = fastf1.get_event_schedule(year)
         if schedule.empty:
-            raise HTTPException(status_code=404, detail=f"Year {year} not found in FastF1 data")
+            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"Year {year} not found in FastF1 data")
         races = schedule["EventName"].tolist()
     except (ValueError, KeyError):
-        raise HTTPException(status_code=404, detail=f"Year {year} not found in FastF1 data")
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"Year {year} not found in FastF1 data")
 
     return RaceNamesResponse(year=year, races=races)
 
@@ -56,7 +56,7 @@ def get_race_schedule(year: int, race_name: str):
         event = fastf1.get_event(year, int(event_row.iloc[0]["RoundNumber"]))
     except (ValueError, KeyError, IndexError):
         raise HTTPException(
-            status_code=404, detail=f"Race '{race_name}' not found for year {year}"
+            status_code=status.HTTP_404_NOT_FOUND, detail=f"Race '{race_name}' not found for year {year}"
         )
 
     sessions = []

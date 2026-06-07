@@ -48,8 +48,9 @@ tests/
 ## Development
 
 ### Adding New Endpoints
+Use the `/add-endpoint` skill for guided workflow. Steps:
 1. Create or update the Pydantic model in `src/models/`
-2. Add endpoint to `src/app.py`
+2. Add endpoint to `src/app.py` (use `fastapi.status` constants for HTTP codes)
 3. Add tests to `tests/test_endpoints.py` (minimum: one test per endpoint)
 4. Update README.md API Endpoints section
 

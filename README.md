@@ -68,3 +68,7 @@ src/
 tests/
   test_endpoints.py  # Endpoint tests
 ```
+
+## Best Practices
+
+- Use `fastapi.status` constants for HTTP status codes instead of hardcoding them (e.g., `status.HTTP_404_NOT_FOUND` instead of `404`)
