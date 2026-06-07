@@ -11,6 +11,7 @@ uv sync                                 # Install dependencies
 
 ### Run
 ```bash
+redis-server                            # Start Redis (in another terminal)
 uv run uvicorn src.app:app --reload    # Start development server (http://localhost:8000)
 ```
 
@@ -23,14 +24,15 @@ uv run pytest tests/test_endpoints.py::test_health_check  # Run specific test
 
 ## Project Overview
 
-FastAPI backend for F1 data visualization using FastF1 as the data source. The project follows PEP-8 style and uses Pydantic for validation.
+FastAPI backend for F1 data visualization using FastF1 as the data source. Includes Redis caching for FastF1 API calls. Uses FastAPI's lifespan for Redis connection management. The project follows PEP-8 style and uses Pydantic for validation.
 
-**Stack:** FastAPI, Pydantic, FastF1, pytest
+**Stack:** FastAPI, Pydantic, FastF1, Redis, pytest
 
 ### Project Structure
 ```
 src/
   app.py               # FastAPI application with all endpoints
+  cache.py             # Redis caching service
   models/              # Pydantic models for validation
     __init__.py
     health.py          # HealthResponse model
@@ -40,10 +42,14 @@ tests/
 ```
 
 ### Key Dependencies
-- `fastapi` — Web framework
+- `fastapi` — Web framework with lifespan support
 - `pydantic` — Request/response validation
 - `fastf1` — F1 data provider
-- `pytest`, `httpx` — Testing (dev dependencies)
+- `redis` — Async caching layer
+- `pytest`, `httpx2` — Testing (dev dependencies)
+
+### Caching
+Expensive FastF1 calls (schedule fetches, event details) are cached in Redis with a 24-hour TTL. Cache keys follow the pattern `f1:{year}:{resource}`. The cache is optional—requests work without Redis, falling back to direct FastF1 calls. Use FastAPI's lifespan feature (`@asynccontextmanager`) to manage Redis connection lifecycle.
 
 ## Development
 

@@ -9,6 +9,7 @@ dependencies = [
     "uvicorn>=0.24.0",
     "pydantic>=2.5.0",
     "fastf1>=3.5.0",
+    "redis>=5.0.0",
 ]
 
 [project.optional-dependencies]
