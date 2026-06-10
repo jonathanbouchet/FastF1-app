@@ -99,5 +99,6 @@ async def get_race_schedule(year: int, race_name: str, cache: CacheService = Dep
         if session_name and session_date_utc:
             sessions.append(SessionInfo(name=session_name, date_utc=session_date_utc))
 
-    await cache.set(cache_key, {"sessions": [s.model_dump() for s in sessions]})
+    sessions_dict = [{"name": s.name, "date_utc": s.date_utc.isoformat()} for s in sessions]
+    await cache.set(cache_key, {"sessions": sessions_dict})
     return RaceScheduleResponse(year=year, race_name=race_name, sessions=sessions)
