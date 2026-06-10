@@ -10,6 +10,8 @@ dependencies = [
     "pydantic>=2.5.0",
     "fastf1>=3.5.0",
     "redis>=5.0.0",
+    "streamlit>=1.28.0",
+    "requests>=2.31.0",
 ]
 
 [project.optional-dependencies]

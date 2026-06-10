@@ -1,15 +1,23 @@
-# F1 Data Visualization API
+# F1 Data Visualization
 
-A FastAPI backend for Formula 1 data visualization powered by [FastF1](https://docs.fastf1.dev/).
+A FastAPI backend + Streamlit frontend for Formula 1 data visualization powered by [FastF1](https://docs.fastf1.dev/).
 
 ## Features
 
+### Backend
 - RESTful API endpoints for F1 data
 - Pydantic validation for all requests and responses
 - FastF1 integration for seamless data access
 - Redis caching layer for expensive FastF1 calls (24-hour TTL)
 - FastAPI lifespan for automatic Redis connection management
 - Comprehensive test coverage with pytest
+
+### Frontend
+- Streamlit multi-page UI
+- Year-based race filtering with sidebar
+- Race schedule display with UTC timestamps
+- Dark/light mode following browser preferences
+- Client-side caching for API responses
 
 ## Getting Started
 
@@ -27,21 +35,27 @@ uv sync
 
 This installs all dependencies and creates a virtual environment.
 
-## Running the API
+## Running
 
-Start Redis (in one terminal):
+### Start Redis (required for caching)
 ```bash
 redis-server
 ```
 
-Start the API server (in another terminal):
+### Start the API backend (in a new terminal)
 ```bash
 uv run uvicorn src.app:app --reload
 ```
+API available at `http://localhost:8000`  
+Interactive docs at `http://localhost:8000/docs`
 
-The API will be available at `http://localhost:8000`. Interactive API documentation is at `http://localhost:8000/docs`.
+### Start the Streamlit frontend (in another terminal)
+```bash
+uv run streamlit run streamlit_app.py
+```
+UI available at `http://localhost:8501`
 
-**Note:** The API will gracefully handle Redis unavailability by bypassing the cache and fetching directly from FastF1.
+**Note:** The API will gracefully handle Redis unavailability by bypassing the cache and fetching directly from FastF1. Streamlit will show connection errors if the API is not running.
 
 ## Testing
 
@@ -63,12 +77,17 @@ Run a specific test:
 uv run pytest tests/test_endpoints.py::test_health_check
 ```
 
-## API Endpoints
+## Backend API Endpoints
 
 - `GET /health` — Health check endpoint
 - `GET /years/{year}/available` — Check if a given year has F1 data available
 - `GET /years/{year}/races` — Get all race names for a given year
 - `GET /years/{year}/races/{race_name}/schedule` — Get event schedule for a race (sessions with dates)
+
+## Frontend Pages
+
+- **Race Names** — Browse all races for a selected year
+- **Race Schedule** — View detailed session schedule for a selected race
 
 ## Caching
 
@@ -87,7 +106,8 @@ src/
   cache.py           # Redis caching service
   models/            # Pydantic models for request/response validation
 tests/
-  test_endpoints.py  # Endpoint tests
+  test_endpoints.py  # Backend endpoint tests
+streamlit_app.py     # Streamlit frontend application
 ```
 
 ## Best Practices

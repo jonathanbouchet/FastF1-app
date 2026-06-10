@@ -12,7 +12,8 @@ uv sync                                 # Install dependencies
 ### Run
 ```bash
 redis-server                            # Start Redis (in another terminal)
-uv run uvicorn src.app:app --reload    # Start development server (http://localhost:8000)
+uv run uvicorn src.app:app --reload    # Start FastAPI backend (http://localhost:8000)
+uv run streamlit run streamlit_app.py   # Start Streamlit UI (http://localhost:8501)
 ```
 
 ### Testing
@@ -24,9 +25,9 @@ uv run pytest tests/test_endpoints.py::test_health_check  # Run specific test
 
 ## Project Overview
 
-FastAPI backend for F1 data visualization using FastF1 as the data source. Includes Redis caching for FastF1 API calls. Uses FastAPI's lifespan for Redis connection management. The project follows PEP-8 style and uses Pydantic for validation.
+FastAPI backend + Streamlit frontend for F1 data visualization using FastF1 as the data source. Backend includes Redis caching for FastF1 API calls with FastAPI's lifespan for connection management. Frontend is a multi-page Streamlit app with sidebar controls. The project follows PEP-8 style and uses Pydantic for validation.
 
-**Stack:** FastAPI, Pydantic, FastF1, Redis, pytest
+**Stack:** FastAPI, Pydantic, FastF1, Redis, Streamlit, pytest
 
 ### Project Structure
 ```
